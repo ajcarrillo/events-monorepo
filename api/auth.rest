@@ -7,6 +7,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/auth/login/callback?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXN0aW5hdGlvbiI6ImFuZHJlc2pjaDI4MDRAZ21haWwuY29tIiwiY29kZSI6IjIzMjAwIiwiaWF0IjoxNjkyODk2MDk4LCJleHAiOjE2OTI4OTYzOTh9.erinVP1Bez54pVpcZ2Z1oxqGKVmItGBsTjkrqBeY_DA
+GET http://localhost:3000/api/auth/login/callback?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXN0aW5hdGlvbiI6ImFuZHJlc2pjaDI4MDRAZ21haWwuY29tIiwiY29kZSI6IjkyMTIxIiwiaWF0IjoxNjkyOTQxNTI2LCJleHAiOjE2OTI5NDE4MjZ9.UI3nBXjazn-NopQcA3YdGmpiIR9Lfcq_Lm9a50DoU3Y
 
 > {% client.global.set('access_token', response.body.access_token) %}
