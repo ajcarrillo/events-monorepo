@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateEventDto, UpdateEventDto } from './dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EventEntity } from './entities/event.entity';
+import { Repository } from 'typeorm';
+import { CongressService } from './congress.service';
 
 @Injectable()
 export class EventsService {
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
+  constructor(
+    @InjectRepository(EventEntity)
+    private readonly eventRepository: Repository<EventEntity>,
+    private readonly congressService: CongressService,
+  ) {}
+
+  async create(createEventDto: CreateEventDto): Promise<EventEntity> {
+    let congress = null;
+
+    if (createEventDto.congress_id) {
+      congress = await this.congressService.findOne(createEventDto.congress_id);
+    }
+
+    const event = this.eventRepository.create({
+      ...createEventDto,
+      congress,
+    });
+
+    return await this.eventRepository.save(event);
   }
 
-  findAll() {
-    return `This action returns all events`;
+  async findAll(): Promise<EventEntity[]> {
+    return await this.eventRepository.find({ relations: ['congress'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  async findOne(id: string): Promise<EventEntity> {
+    const event = await this.eventRepository.findOne({
+      where: { id },
+      relations: ['congress'],
+    });
+    if (!event) {
+      throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+
+    return event;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
-  }
+  async update(
+    id: string,
+    updateEventDto: UpdateEventDto,
+  ): Promise<EventEntity> {
+    await this.findOne(id);
+    await this.eventRepository.update(id, updateEventDto);
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+    return this.findOne(id);
   }
 }
