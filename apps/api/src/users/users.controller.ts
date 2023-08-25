@@ -22,6 +22,8 @@ export class UsersController {
 
   @Get('me')
   me(@GetUser() user: User) {
+    delete user.password;
+
     return user;
   }
 
@@ -36,8 +38,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param('id') id: string | number) {
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')

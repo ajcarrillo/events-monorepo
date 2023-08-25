@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
@@ -8,6 +10,7 @@ import {
 import { Certificate } from '../../certificates/entities/certificate.entity';
 import { Attendance } from '../../events/entities/attendance.entity';
 import { EventStaff } from '../../events/entities/event-staff.entity';
+import * as bcrypt from 'bcrypt';
 
 export enum UserRole {
   Student = 'Student',
@@ -30,7 +33,7 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @Column('simple-array')
@@ -56,4 +59,13 @@ export class User {
 
   @OneToMany(() => EventStaff, (staff) => staff.user)
   eventStaffPositions: EventStaff[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async normalizeEmailAndHashPassword() {
+    this.email = this.email.toLowerCase();
+
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 }
