@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { EventsModule } from './events/events.module';
 import { CertificatesModule } from './certificates/certificates.module';
 import { AuthModule } from './auth/auth.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     EventsModule,
     CertificatesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

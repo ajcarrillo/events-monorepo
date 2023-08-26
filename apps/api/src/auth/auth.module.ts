@@ -7,16 +7,18 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    UsersModule,
-    PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    UsersModule,
+    PassportModule,
+    NotificationsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, MagicLoginStrategy, JwtStrategy],
