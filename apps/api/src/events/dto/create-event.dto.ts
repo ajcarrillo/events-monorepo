@@ -1,6 +1,7 @@
 import {
   IsDateString,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -45,6 +46,11 @@ export class CreateEventDto {
   @IsUUID()
   congress_id?: string;
 
+  @IsNumber()
   @IsOptional()
   career_id?: number;
+
+  @IsNumber()
+  @IsOptional()
+  coordinator_id?: number;
 }

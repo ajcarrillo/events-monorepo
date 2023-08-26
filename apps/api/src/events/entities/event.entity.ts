@@ -5,12 +5,15 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Congress } from './congress.entity';
 import { Certificate } from '../../certificates/entities/certificate.entity';
 import { Attendance } from './attendance.entity';
 import { EventStaff } from './event-staff.entity';
 import { Career } from './career.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('events')
 export class EventEntity {
@@ -51,4 +54,14 @@ export class EventEntity {
   @ManyToOne(() => Career, (career) => career.events, { nullable: true })
   @JoinColumn({ name: 'carrera_id' })
   career?: Career | null;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'coordinator_id' })
+  coordinator: User;
+
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
+  created_at: Date | null;
+
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
+  updated_at: Date | null;
 }

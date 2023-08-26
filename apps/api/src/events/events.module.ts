@@ -11,6 +11,7 @@ import { CongressService } from './congress.service';
 import { Career } from './entities';
 import { CareerService } from './career.service';
 import { CareerController } from './career.controller';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [EventsController, CongressController, CareerController],
@@ -23,6 +24,7 @@ import { CareerController } from './career.controller';
       EventStaff,
       Career,
     ]),
+    UsersModule,
   ],
 })
 export class EventsModule {}

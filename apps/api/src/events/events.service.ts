@@ -5,6 +5,7 @@ import { EventEntity } from './entities';
 import { Repository } from 'typeorm';
 import { CongressService } from './congress.service';
 import { CareerService } from './career.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class EventsService {
@@ -13,11 +14,13 @@ export class EventsService {
     private readonly eventRepository: Repository<EventEntity>,
     private readonly congressService: CongressService,
     private readonly careerService: CareerService,
+    private readonly userService: UsersService,
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<EventEntity> {
     let congress = null;
     let career = null;
+    let coordinator = null;
 
     if (createEventDto.congress_id) {
       congress = await this.congressService.findOne(createEventDto.congress_id);
@@ -27,10 +30,17 @@ export class EventsService {
       career = await this.careerService.findOne(createEventDto.career_id);
     }
 
+    if (createEventDto.coordinator_id) {
+      coordinator = await this.userService.findOne(
+        createEventDto.coordinator_id,
+      );
+    }
+
     const event = this.eventRepository.create({
       ...createEventDto,
       congress,
       career,
+      coordinator,
     });
 
     return await this.eventRepository.save(event);
@@ -38,7 +48,7 @@ export class EventsService {
 
   async findAll(): Promise<EventEntity[]> {
     return await this.eventRepository.find({
-      relations: ['congress', 'career'],
+      relations: ['congress', 'career', 'coordinator'],
     });
   }
 
