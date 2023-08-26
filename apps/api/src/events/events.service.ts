@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEventDto, UpdateEventDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventEntity } from './entities/event.entity';
+import { EventEntity } from './entities';
 import { Repository } from 'typeorm';
 import { CongressService } from './congress.service';
+import { CareerService } from './career.service';
 
 @Injectable()
 export class EventsService {
@@ -11,25 +12,34 @@ export class EventsService {
     @InjectRepository(EventEntity)
     private readonly eventRepository: Repository<EventEntity>,
     private readonly congressService: CongressService,
+    private readonly careerService: CareerService,
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<EventEntity> {
     let congress = null;
+    let career = null;
 
     if (createEventDto.congress_id) {
       congress = await this.congressService.findOne(createEventDto.congress_id);
     }
 
+    if (createEventDto.career_id) {
+      career = await this.careerService.findOne(createEventDto.career_id);
+    }
+
     const event = this.eventRepository.create({
       ...createEventDto,
       congress,
+      career,
     });
 
     return await this.eventRepository.save(event);
   }
 
   async findAll(): Promise<EventEntity[]> {
-    return await this.eventRepository.find({ relations: ['congress'] });
+    return await this.eventRepository.find({
+      relations: ['congress', 'career'],
+    });
   }
 
   async findOne(id: string): Promise<EventEntity> {

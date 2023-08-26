@@ -10,6 +10,7 @@ import { Congress } from './congress.entity';
 import { Certificate } from '../../certificates/entities/certificate.entity';
 import { Attendance } from './attendance.entity';
 import { EventStaff } from './event-staff.entity';
+import { Career } from './career.entity';
 
 @Entity('events')
 export class EventEntity {
@@ -46,4 +47,8 @@ export class EventEntity {
 
   @OneToMany(() => EventStaff, (staff) => staff.event)
   staffMembers: EventStaff[];
+
+  @ManyToOne(() => Career, (career) => career.events, { nullable: true })
+  @JoinColumn({ name: 'carrera_id' })
+  career?: Career | null;
 }

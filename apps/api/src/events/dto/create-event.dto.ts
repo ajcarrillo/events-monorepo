@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -41,5 +42,9 @@ export class CreateEventDto {
   speaker_specialty: string;
 
   @IsOptional()
+  @IsUUID()
   congress_id?: string;
+
+  @IsOptional()
+  career_id?: number;
 }

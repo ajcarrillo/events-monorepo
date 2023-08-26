@@ -2,18 +2,27 @@ import { Module } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventsController } from './events.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EventEntity } from './entities/event.entity';
-import { Congress } from './entities/congress.entity';
-import { Attendance } from './entities/attendance.entity';
-import { EventStaff } from './entities/event-staff.entity';
+import { EventEntity } from './entities';
+import { Congress } from './entities';
+import { Attendance } from './entities';
+import { EventStaff } from './entities';
 import { CongressController } from './congress.controller';
 import { CongressService } from './congress.service';
+import { Career } from './entities';
+import { CareerService } from './career.service';
+import { CareerController } from './career.controller';
 
 @Module({
-  controllers: [EventsController, CongressController],
-  providers: [EventsService, CongressService],
+  controllers: [EventsController, CongressController, CareerController],
+  providers: [EventsService, CongressService, CareerService],
   imports: [
-    TypeOrmModule.forFeature([EventEntity, Congress, Attendance, EventStaff]),
+    TypeOrmModule.forFeature([
+      EventEntity,
+      Congress,
+      Attendance,
+      EventStaff,
+      Career,
+    ]),
   ],
 })
 export class EventsModule {}
