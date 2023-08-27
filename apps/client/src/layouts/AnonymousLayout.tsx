@@ -1,20 +1,22 @@
-import React from 'react';
-import { Outlet } from "react-router-dom";
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import { Container } from '@mui/material'
+import TheHeader from '../components/TheHeader.tsx'
 
 const AnonymousLayout: React.FC = () => {
   return (
     <div>
-      <header>
-        <h1>Bienvenido visitante</h1>
-      </header>
-      <main>
-        <Outlet/>
-      </main>
-      <footer>
-        Este es el pie de página para visitantes.
-      </footer>
+      <TheHeader/>
+      <Container maxWidth="lg">
+        <main>
+          <Outlet/>
+        </main>
+        <footer>
+          Este es el pie de página para visitantes.
+        </footer>
+      </Container>
     </div>
-  );
+  )
 }
 
-export default AnonymousLayout;
+export default AnonymousLayout
